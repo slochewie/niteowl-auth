@@ -7,20 +7,20 @@ import {
   useLoaderData,
   useRouteError,
   type ActionFunctionArgs,
+  type LoaderFunctionArgs,
 } from "react-router";
 import { auth } from "~/lib/auth.server";
 import { getOrCreateQueryClient } from "~/lib/query-client";
 import { getStackClient } from "~/lib/stack-client";
 
-function normalizePath(path?: string) {
-  if (!path) return "/";
-  const segments = path.split("/").filter(Boolean);
-  return segments.length > 0 ? `/${segments.join("/")}` : "/";
+function pathnameFromRequest(request: Request) {
+  const pathname = new URL(request.url).pathname;
+  return pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
 }
 
-export async function loader({ params }: { params: Record<string, string | undefined> }) {
+export async function loader({ request }: LoaderFunctionArgs) {
   const queryClient = getOrCreateQueryClient();
-  const path = normalizePath(params["*"]);
+  const path = pathnameFromRequest(request);
   const route = getStackClient(queryClient).router.getRoute(path);
 
   if (route?.loader) {
@@ -36,10 +36,10 @@ export async function loader({ params }: { params: Record<string, string | undef
   };
 }
 
-export async function action({ request, params }: ActionFunctionArgs) {
-  const path = normalizePath(params["*"]);
+export async function action({ request }: ActionFunctionArgs) {
+  const path = pathnameFromRequest(request);
 
-  if (path !== "/auth/sign-up") {
+  if (path !== "/p/auth/sign-up") {
     return new Response("Method not allowed", { status: 405 });
   }
 
