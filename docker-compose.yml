@@ -20,13 +20,25 @@ services:
     networks:
       - niteowl-auth
 
+  build-app:
+    image: node:24
+    container_name: niteowl-auth-build
+    restart: "no"
+    working_dir: /app
+    command: ["bash", "/scripts/build.sh"]
+    environment:
+      NODE_ENV: production
+    volumes:
+      - ./app:/app
+      - app_node_modules:/app/node_modules
+      - ./scripts:/scripts:ro
+
   niteowl-auth:
-    build:
-      context: .
-      dockerfile: app/Dockerfile
-    image: niteowl-auth:local
+    image: node:24-slim
     container_name: niteowl-auth
     restart: unless-stopped
+    working_dir: /app
+    command: ["bash", "/scripts/start.sh"]
     environment:
       NODE_ENV: production
       PORT: ${PORT}
@@ -39,13 +51,22 @@ services:
       BETTER_AUTH_URL: ${BETTER_AUTH_URL}
       BETTER_AUTH_TRUSTED_ORIGINS: ${BETTER_AUTH_TRUSTED_ORIGINS}
       PUBLIC_SITE_URL: ${PUBLIC_SITE_URL}
+    volumes:
+      - ./app:/app:ro
+      - app_node_modules:/app/node_modules:ro
+      - ./scripts:/scripts:ro
     ports:
       - "${APP_PORT}:${PORT}"
     depends_on:
       postgres:
         condition: service_healthy
+      build-app:
+        condition: service_completed_successfully
     networks:
       - niteowl-auth
+
+volumes:
+  app_node_modules:
 
 networks:
   niteowl-auth:
