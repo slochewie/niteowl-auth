@@ -8,7 +8,7 @@ NiteOwl Auth is a Docker-first full-stack application built with:
 - BTST Better Auth UI routes
 - Better Auth with the Organization plugin
 - PostgreSQL 18
-- Tailwind CSS v4
+- Tailwind CSS v4 and shadcn CSS variables
 - Sonner
 
 ## First startup
@@ -20,7 +20,7 @@ docker compose up -d
 docker compose logs -f niteowl-auth
 ```
 
-No local scaffolding or npm command is required before the first startup. The committed application scaffold is complete. `scripts/start.sh` will:
+No local scaffolding or npm command is required before the first startup. The application scaffold is committed to Git. `scripts/start.sh` will:
 
 1. install dependencies and create `app/package-lock.json` when it does not exist;
 2. use `npm ci` on later starts when the lockfile exists;
