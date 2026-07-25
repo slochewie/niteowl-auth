@@ -8,7 +8,7 @@
     "build": "react-router build",
     "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc --noEmit",
-    "auth:migrate": "npx auth@latest migrate --config app/lib/auth.server.ts --yes"
+    "auth:migrate": "auth migrate --config app/lib/auth.server.ts --yes"
   },
   "dependencies": {
     "@btst/adapter-drizzle": "2.2.2",
@@ -19,6 +19,7 @@
     "@react-router/node": "7.9.1",
     "@react-router/serve": "7.9.1",
     "@tanstack/react-query": "5.100.14",
+    "auth": "1.6.25",
     "better-auth": "1.6.25",
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
