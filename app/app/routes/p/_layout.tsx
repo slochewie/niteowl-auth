@@ -1,5 +1,4 @@
 import { StackProvider } from "@btst/stack/context";
-import { reactRouter } from "@btst/stack/react-router";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Outlet } from "react-router";
 import { authClient } from "~/lib/auth-client";
@@ -18,7 +17,6 @@ export default function BtstPagesLayout() {
     <QueryClientProvider client={queryClient}>
       <StackProvider
         basePath="/p"
-        router={reactRouter()}
         api={{ baseURL, basePath: "/api/data" }}
         overrides={{
           auth: {
