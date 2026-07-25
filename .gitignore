@@ -1,7 +1,7 @@
 .env
 node_modules/
 postgres/
-app/dist/
+app/build/
+app/.react-router/
 *.log
 .DS_Store
-app/server-dist/
