@@ -1,0 +1,35 @@
+{
+  "name": "niteowl-auth",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "npm run build:web && npm run build:server",
+    "build:web": "vite build",
+    "build:server": "tsc -p tsconfig.server.json",
+    "start": "node server-dist/index.js",
+    "auth:migrate": "npx auth@latest migrate --config server/auth.ts --yes"
+  },
+  "dependencies": {
+    "@btst/stack": "latest",
+    "@tanstack/react-query": "latest",
+    "better-auth": "latest",
+    "cors": "latest",
+    "express": "4",
+    "pg": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router-dom": "latest"
+  },
+  "devDependencies": {
+    "@types/cors": "latest",
+    "@types/express": "latest",
+    "@types/node": "latest",
+    "@types/pg": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react": "latest",
+    "typescript": "latest",
+    "vite": "latest"
+  }
+}

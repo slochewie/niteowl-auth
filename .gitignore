@@ -1,0 +1,7 @@
+.env
+node_modules/
+postgres/
+app/dist/
+*.log
+.DS_Store
+app/server-dist/
