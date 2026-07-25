@@ -11,7 +11,6 @@
     "auth:migrate": "npx auth@latest migrate --config app/lib/auth.server.ts --yes"
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "latest",
     "@btst/adapter-drizzle": "latest",
     "@btst/better-auth-ui": "latest",
     "@btst/stack": "latest",
@@ -21,6 +20,7 @@
     "better-auth": "latest",
     "drizzle-orm": "latest",
     "isbot": "latest",
+    "pg": "latest",
     "postgres": "latest",
     "react": "latest",
     "react-dom": "latest",
@@ -32,6 +32,7 @@
     "@react-router/dev": "latest",
     "@tailwindcss/vite": "latest",
     "@types/node": "latest",
+    "@types/pg": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "drizzle-kit": "latest",
