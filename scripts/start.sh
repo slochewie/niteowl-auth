@@ -8,20 +8,22 @@ if [ ! -f package.json ]; then
   exit 1
 fi
 
-if [ ! -f package-lock.json ]; then
-  echo "ERROR: /app/package-lock.json is missing."
-  echo "Run npm install inside ./app before the first docker compose up."
-  exit 1
+if [ -f package-lock.json ]; then
+  echo "Installing locked npm dependencies..."
+  npm ci
+else
+  echo "Creating package-lock.json and installing dependencies..."
+  npm install
 fi
-
-echo "Installing locked npm dependencies..."
-npm ci
 
 echo "Applying Better Auth database migrations..."
 npm run auth:migrate
 
+echo "Checking TypeScript..."
+npm run typecheck
+
 echo "Building NiteOwl Auth for production..."
 npm run build
 
-echo "Starting NiteOwl Auth in production mode..."
+echo "Starting NiteOwl Auth on port ${PORT:-3000}..."
 exec npm start
