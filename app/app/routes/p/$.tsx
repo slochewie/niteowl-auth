@@ -5,6 +5,7 @@ import {
 } from "@tanstack/react-query";
 import {
   useLoaderData,
+  useLocation,
   useRouteError,
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
@@ -13,14 +14,16 @@ import { auth } from "~/lib/auth.server";
 import { getOrCreateQueryClient } from "~/lib/query-client";
 import { getStackClient } from "~/lib/stack-client";
 
-function pathnameFromRequest(request: Request) {
-  const pathname = new URL(request.url).pathname;
-  return pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname;
+function normalizePath(pathname: string) {
+  const withoutBasePath = pathname.replace(/^\/p(?=\/|$)/, "") || "/";
+  return withoutBasePath.length > 1
+    ? withoutBasePath.replace(/\/+$/, "")
+    : withoutBasePath;
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const queryClient = getOrCreateQueryClient();
-  const path = pathnameFromRequest(request);
+  const path = normalizePath(new URL(request.url).pathname);
   const route = getStackClient(queryClient).router.getRoute(path);
 
   if (route?.loader) {
@@ -37,9 +40,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const path = pathnameFromRequest(request);
+  const path = normalizePath(new URL(request.url).pathname);
 
-  if (path !== "/p/auth/sign-up") {
+  if (path !== "/auth/sign-up") {
     return new Response("Method not allowed", { status: 405 });
   }
 
@@ -73,8 +76,10 @@ export function meta({ loaderData }: { loaderData?: Awaited<ReturnType<typeof lo
 
 export default function BtstPage() {
   const data = useLoaderData<typeof loader>();
+  const location = useLocation();
   const queryClient = useQueryClient();
-  const route = getStackClient(queryClient).router.getRoute(data.path);
+  const path = normalizePath(location.pathname);
+  const route = getStackClient(queryClient).router.getRoute(path);
 
   return (
     <HydrationBoundary state={data.dehydratedState}>
