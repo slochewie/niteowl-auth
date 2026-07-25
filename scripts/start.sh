@@ -12,6 +12,8 @@ if [ -f package-lock.json ]; then
   echo "Installing locked npm dependencies..."
   npm ci
 else
+  echo "Cleaning any partial first-install state..."
+  rm -rf node_modules
   echo "Creating package-lock.json and installing dependencies..."
   npm install
 fi
