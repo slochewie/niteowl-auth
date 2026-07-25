@@ -41,10 +41,10 @@ Express serves the built frontend and API through the same port.
 
 ## Reverse proxy
 
-For deployment at `auth.niteowl.dev`, change these values in `.env`:
+For deployment at `auth.example.com`, change these values in `.env`:
 
 ```dotenv
-BETTER_AUTH_URL=https://auth.niteowl.dev
-BETTER_AUTH_TRUSTED_ORIGINS=https://auth.niteowl.dev
-VITE_API_URL=https://auth.niteowl.dev
+BETTER_AUTH_URL=https://auth.example.com
+BETTER_AUTH_TRUSTED_ORIGINS=https://auth.example.com
+VITE_API_URL=https://auth.example.com
 ```
