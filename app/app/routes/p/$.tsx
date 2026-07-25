@@ -3,7 +3,12 @@ import {
   dehydrate,
   useQueryClient,
 } from "@tanstack/react-query";
-import { useLoaderData, useRouteError } from "react-router";
+import {
+  useLoaderData,
+  useRouteError,
+  type ActionFunctionArgs,
+} from "react-router";
+import { auth } from "~/lib/auth.server";
 import { getOrCreateQueryClient } from "~/lib/query-client";
 import { getStackClient } from "~/lib/stack-client";
 
@@ -29,6 +34,37 @@ export async function loader({ params }: { params: Record<string, string | undef
     }),
     meta: await route?.meta?.(),
   };
+}
+
+export async function action({ request, params }: ActionFunctionArgs) {
+  const path = normalizePath(params["*"]);
+
+  if (path !== "/auth/sign-up") {
+    return new Response("Method not allowed", { status: 405 });
+  }
+
+  const form = await request.formData();
+  const name = String(form.get("name") ?? "").trim();
+  const email = String(form.get("email") ?? "").trim();
+  const password = String(form.get("password") ?? "");
+
+  const response = await auth.api.signUpEmail({
+    body: { name, email, password },
+    headers: request.headers,
+    asResponse: true,
+  });
+
+  if (!response.ok) {
+    return response;
+  }
+
+  const headers = new Headers(response.headers);
+  headers.set("Location", "/p/account/settings");
+
+  return new Response(null, {
+    status: 303,
+    headers,
+  });
 }
 
 export function meta({ loaderData }: { loaderData?: Awaited<ReturnType<typeof loader>> }) {
