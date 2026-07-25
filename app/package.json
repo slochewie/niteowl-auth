@@ -4,32 +4,40 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "build": "npm run build:web && npm run build:server",
-    "build:web": "vite build",
-    "build:server": "tsc -p tsconfig.server.json",
-    "start": "node server-dist/index.js",
-    "auth:migrate": "npx auth@latest migrate --config server/auth.ts --yes"
+    "dev": "react-router dev --host 0.0.0.0",
+    "build": "react-router build",
+    "start": "react-router-serve ./build/server/index.js",
+    "typecheck": "react-router typegen && tsc --noEmit",
+    "auth:migrate": "npx auth@latest migrate --config app/lib/auth.server.ts --yes"
   },
   "dependencies": {
+    "@better-auth/drizzle-adapter": "latest",
+    "@btst/adapter-drizzle": "latest",
+    "@btst/better-auth-ui": "latest",
     "@btst/stack": "latest",
+    "@react-router/node": "latest",
+    "@react-router/serve": "latest",
     "@tanstack/react-query": "latest",
     "better-auth": "latest",
-    "cors": "latest",
-    "express": "4",
-    "pg": "latest",
+    "drizzle-orm": "latest",
+    "isbot": "latest",
+    "postgres": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-router-dom": "latest"
+    "react-router": "latest",
+    "sonner": "latest"
   },
   "devDependencies": {
-    "@types/cors": "latest",
-    "@types/express": "latest",
+    "@btst/cli": "latest",
+    "@react-router/dev": "latest",
+    "@tailwindcss/vite": "latest",
     "@types/node": "latest",
-    "@types/pg": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
-    "@vitejs/plugin-react": "latest",
+    "drizzle-kit": "latest",
+    "tailwindcss": "latest",
     "typescript": "latest",
-    "vite": "latest"
+    "vite": "latest",
+    "vite-tsconfig-paths": "latest"
   }
 }
