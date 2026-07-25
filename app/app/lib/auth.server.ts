@@ -12,7 +12,7 @@ export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
   trustedOrigins,
-  database: new Pool({ connectionString: process.env.DATABASE_URL }),
+  database: new Pool(),
   emailAndPassword: { enabled: true },
   plugins: [organization({ allowUserToCreateOrganization: true })],
 });
