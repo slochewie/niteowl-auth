@@ -5,7 +5,8 @@ import { db } from "./database.server";
 const configured = stack({
   basePath: "/api/data",
   plugins: {},
-  adapter: (schema) => createDrizzleAdapter(db, schema, {}),
+  adapter: (schema) =>
+    createDrizzleAdapter(db, schema, { provider: "pg" })({}),
 });
 
 export const handler = configured.handler;
