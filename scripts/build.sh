@@ -17,5 +17,8 @@ npm run typecheck
 echo "Building NiteOwl Auth for production..."
 npm run build
 
+echo "Applying Better Auth database migrations..."
+npm run auth:migrate
+
 echo "Removing build-only dependencies..."
 npm prune --omit=dev
