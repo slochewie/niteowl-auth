@@ -13,7 +13,9 @@ if [ -f package-lock.json ]; then
   npm ci
 else
   echo "Cleaning any partial first-install state..."
-  rm -rf node_modules
+  if [ -d node_modules ]; then
+    find node_modules -mindepth 1 -maxdepth 1 -exec rm -rf -- {} +
+  fi
   echo "Creating package-lock.json and installing dependencies..."
   npm install
 fi
