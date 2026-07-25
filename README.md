@@ -1,50 +1,53 @@
 # NiteOwl Auth
 
-Git-first, production-mode NiteOwl application containing Better Stack, Better Auth,
-React/Vite, Express, the Better Auth Organization plugin, and PostgreSQL.
+NiteOwl Auth is a Docker-first full-stack application built with:
 
-## Prepare before the first Docker startup
+- React Router v7 framework mode
+- BTST backend and client stacks
+- BTST Drizzle adapter
+- BTST Better Auth UI routes
+- Better Auth with the Organization plugin
+- PostgreSQL 18
+- Tailwind CSS v4
+- Sonner
+
+## First startup
 
 ```bash
 cp env.example .env
 nano .env
-
-cd app
-npm install
-cd ..
-```
-
-`npm install` creates `app/package-lock.json`. Commit the scaffold and lockfile to Git.
-
-## Start
-
-```bash
 docker compose up -d
 docker compose logs -f niteowl-auth
 ```
 
-The startup script does not scaffold application files. It:
+No local scaffolding or npm command is required before the first startup. The committed application scaffold is complete. `scripts/start.sh` will:
 
-1. verifies `package.json` and `package-lock.json`;
-2. installs locked dependencies with `npm ci`;
-3. applies Better Auth migrations;
-4. builds the Vite frontend and TypeScript server;
-5. starts the compiled Express server.
+1. install dependencies and create `app/package-lock.json` when it does not exist;
+2. use `npm ci` on later starts when the lockfile exists;
+3. apply Better Auth database migrations;
+4. run React Router type generation and TypeScript checks;
+5. build the production React Router application;
+6. start the production server.
 
-## URLs
+## Routes
 
-- Application: http://localhost:3010
-- Health: http://localhost:3010/health
-- Better Auth API: http://localhost:3010/api/auth
+- Application: `http://localhost:3010/`
+- Health: `http://localhost:3010/health`
+- Better Auth API: `http://localhost:3010/api/auth/*`
+- BTST data API: `http://localhost:3010/api/data/*`
+- BTST pages: `http://localhost:3010/p/*`
+- Sign in: `http://localhost:3010/p/auth/sign-in`
+- Account settings: `http://localhost:3010/p/account/settings`
+- Organization members: `http://localhost:3010/p/org/members`
 
-Express serves the built frontend and API through the same port.
+The application exposes one container port, `3000`, mapped to host port `3010` by default. BTST does not require a separate port.
 
 ## Reverse proxy
 
-For deployment at `auth.example.com`, change these values in `.env`:
+For deployment at `auth.example.com`, set:
 
 ```dotenv
 BETTER_AUTH_URL=https://auth.example.com
 BETTER_AUTH_TRUSTED_ORIGINS=https://auth.example.com
-VITE_API_URL=https://auth.example.com
+PUBLIC_SITE_URL=https://auth.example.com
 ```
