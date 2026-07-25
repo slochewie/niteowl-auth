@@ -1,0 +1,13 @@
+import { createReactRouterPage } from "@btst/stack/react-router";
+import { getOrCreateQueryClient } from "~/lib/query-client";
+import { getStackClient } from "~/lib/stack-client";
+
+const page = createReactRouterPage({
+  getStackClient,
+  getQueryClient: getOrCreateQueryClient,
+});
+
+export const loader = page.loader;
+export const meta = page.meta;
+export const ErrorBoundary = page.ErrorBoundary;
+export default page.Component;
