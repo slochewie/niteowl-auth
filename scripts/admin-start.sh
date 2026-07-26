@@ -13,6 +13,13 @@ if [[ ! -x node_modules/.bin/next || "$CURRENT_DEPENDENCY_HASH" != "$SAVED_DEPEN
   printf '%s\n' "$CURRENT_DEPENDENCY_HASH" > "$DEPENDENCY_HASH_FILE"
 fi
 
+export DATABASE_URL="$(
+  node -e 'const e=process.env; console.log(`postgresql://${encodeURIComponent(e.PGUSER)}:${encodeURIComponent(e.PGPASSWORD)}@${e.PGHOST}:${e.PGPORT}/${encodeURIComponent(e.PGDATABASE)}`)'
+)"
+
+echo "Applying BTST CMS migrations..."
+npm run btst:migrate
+
 CURRENT_SOURCE_HASH="$(
   {
     find src -type f -print0
