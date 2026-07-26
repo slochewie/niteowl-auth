@@ -14,7 +14,10 @@ if [[ ! -x node_modules/.bin/next || "$CURRENT_DEPENDENCY_HASH" != "$SAVED_DEPEN
 fi
 
 CURRENT_SOURCE_HASH="$(
-  find src public -type f -print0 2>/dev/null \
+  {
+    find src -type f -print0
+    printf '%s\0' next.config.ts postcss.config.mjs tsconfig.json
+  } \
     | sort -z \
     | xargs -0 sha256sum \
     | sha256sum \
