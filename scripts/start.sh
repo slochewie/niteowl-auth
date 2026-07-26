@@ -9,8 +9,9 @@ CURRENT_LOCK_HASH="$(sha256sum package-lock.json | awk '{print $1}')"
 SAVED_LOCK_HASH="$(cat "$LOCK_HASH_FILE" 2>/dev/null || true)"
 
 if [[ ! -d node_modules ]] || [[ "$CURRENT_LOCK_HASH" != "$SAVED_LOCK_HASH" ]]; then
-  echo "Installing locked BTST admin dependencies..."
-  npm ci --include=dev
+  echo "Installing BTST admin dependencies..."
+  npm install --include=dev
+  CURRENT_LOCK_HASH="$(sha256sum package-lock.json | awk '{print $1}')"
   printf '%s\n' "$CURRENT_LOCK_HASH" > "$LOCK_HASH_FILE"
 else
   echo "BTST admin dependencies are current."
