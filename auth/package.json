@@ -1,0 +1,16 @@
+{
+  "name": "niteowl-auth-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "auth:migrate": "npx --yes auth@1.6.25 migrate --config src/auth.js --yes"
+  },
+  "dependencies": {
+    "better-auth": "1.6.25",
+    "cors": "2.8.5",
+    "express": "4.21.2",
+    "pg": "8.16.3"
+  }
+}
