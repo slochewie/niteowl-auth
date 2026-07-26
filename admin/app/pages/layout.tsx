@@ -4,6 +4,7 @@ import { StackProvider } from "@btst/stack/context"
 import { QueryClientProvider } from "@tanstack/react-query"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { authClient } from "@/lib/auth-client"
 import { getOrCreateQueryClient } from "@/lib/query-client"
 
 function getBaseURL() {
@@ -33,7 +34,7 @@ export default function BtstPagesLayout({
 				overrides={
 					{
 					auth: {
-						authClient: undefined as any,
+						authClient,
 						navigate: (path: string) => router.push(path),
 						replace: (path: string) => router.replace(path),
 						onSessionChange: () => router.refresh(),
@@ -42,7 +43,7 @@ export default function BtstPagesLayout({
 						redirectTo: "/pages/account/settings",
 					},
 					account: {
-						authClient: undefined as any,
+						authClient,
 						navigate: (path: string) => router.push(path),
 						replace: (path: string) => router.replace(path),
 						onSessionChange: () => router.refresh(),
@@ -51,7 +52,7 @@ export default function BtstPagesLayout({
 						account: { fields: ["image", "name"] },
 					},
 					organization: {
-						authClient: undefined as any,
+						authClient,
 						navigate: (path: string) => router.push(path),
 						replace: (path: string) => router.replace(path),
 						onSessionChange: () => router.refresh(),
