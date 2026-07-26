@@ -33,6 +33,10 @@ The first startup installs locked npm dependencies, applies Better Auth migratio
 builds the BTST admin, and starts both Node services. Later starts skip installation
 and rebuilding unless their inputs changed.
 
+Email verification is intentionally disabled in this baseline because no mail
+delivery service is configured. New and existing local accounts are treated as
+verified so organization and invitation screens remain usable.
+
 ## Services
 
 ```text
