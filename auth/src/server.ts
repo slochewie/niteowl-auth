@@ -15,12 +15,6 @@ app.get("/health", async (_request, response) => {
   response.json({ ok: true, service: "niteowl-auth" });
 });
 
-// Email delivery is intentionally not part of this baseline. Keep existing
-// accounts consistent with newly created accounts, which are trusted locally.
-await pool.query(
-  'UPDATE "user" SET "emailVerified" = TRUE WHERE "emailVerified" = FALSE',
-);
-
 app.listen(env.port, "0.0.0.0", () => {
   console.log(`NiteOwl Auth listening on port ${env.port}`);
 });
