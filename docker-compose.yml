@@ -86,6 +86,8 @@ services:
       PORT: 3000
       ADMIN_URL: ${ADMIN_URL}
       AUTH_INTERNAL_URL: http://auth:3000
+      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
+      BETTER_AUTH_URL: ${ADMIN_URL}
       PGHOST: postgres
       PGPORT: 5432
       PGDATABASE: ${POSTGRES_DB}
