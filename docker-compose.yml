@@ -54,7 +54,7 @@ services:
       REDIS_PORT: 6379
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
-      BETTER_AUTH_URL: ${ADMIN_URL}
+      BETTER_AUTH_URL: ${AUTH_URL}
       BETTER_AUTH_TRUSTED_ORIGINS: ${ADMIN_URL}
     volumes:
       - ./auth:/app
@@ -84,15 +84,10 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
       PORT: 3000
-      ADMIN_URL: ${ADMIN_URL}
-      AUTH_INTERNAL_URL: http://auth:3000
-      BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
-      BETTER_AUTH_URL: ${ADMIN_URL}
-      PGHOST: postgres
-      PGPORT: 5432
-      PGDATABASE: ${POSTGRES_DB}
-      PGUSER: ${POSTGRES_USER}
-      PGPASSWORD: ${POSTGRES_PASSWORD}
+      BASE_URL: ${ADMIN_URL}
+      NEXT_PUBLIC_BASE_URL: ${ADMIN_URL}
+      NEXT_PUBLIC_SITE_URL: ${ADMIN_URL}
+      NEXT_PUBLIC_AUTH_URL: ${AUTH_URL}
     volumes:
       - ./admin:/app
       - ./admin/node_modules:/app/node_modules
