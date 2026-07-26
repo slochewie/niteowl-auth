@@ -6,7 +6,8 @@ import { Pool } from "pg";
 import { env } from "./env.js";
 
 export const pool = new Pool();
-export const redis = new Redis(env.redisURL, {
+export const redis = new Redis({
+  ...env.redis,
   maxRetriesPerRequest: 3,
 });
 
