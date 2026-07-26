@@ -3,16 +3,15 @@ set -euo pipefail
 
 cd /app
 
-LOCK_HASH_FILE="node_modules/.package-lock.sha256"
+DEPENDENCY_HASH_FILE="node_modules/.dependency-files.sha256"
 BUILD_HASH_FILE="build/.source.sha256"
-CURRENT_LOCK_HASH="$(sha256sum package-lock.json | awk '{print $1}')"
-SAVED_LOCK_HASH="$(cat "$LOCK_HASH_FILE" 2>/dev/null || true)"
+CURRENT_DEPENDENCY_HASH="$(cat package.json package-lock.json | sha256sum | awk '{print $1}')"
+SAVED_DEPENDENCY_HASH="$(cat "$DEPENDENCY_HASH_FILE" 2>/dev/null || true)"
 
-if [[ ! -d node_modules ]] || [[ "$CURRENT_LOCK_HASH" != "$SAVED_LOCK_HASH" ]]; then
+if [[ ! -d node_modules ]] || [[ "$CURRENT_DEPENDENCY_HASH" != "$SAVED_DEPENDENCY_HASH" ]]; then
   echo "Installing BTST admin dependencies..."
-  npm install --include=dev
-  CURRENT_LOCK_HASH="$(sha256sum package-lock.json | awk '{print $1}')"
-  printf '%s\n' "$CURRENT_LOCK_HASH" > "$LOCK_HASH_FILE"
+  npm install --include=dev --package-lock=false
+  printf '%s\n' "$CURRENT_DEPENDENCY_HASH" > "$DEPENDENCY_HASH_FILE"
 else
   echo "BTST admin dependencies are current."
 fi
