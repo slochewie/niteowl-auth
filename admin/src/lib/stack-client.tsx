@@ -4,7 +4,10 @@ import {
   organizationClientPlugin,
 } from "@btst/better-auth-ui/client";
 import { createStackClient } from "@btst/stack/client";
+import { blogClientPlugin } from "@btst/stack/plugins/blog/client";
 import { cmsClientPlugin } from "@btst/stack/plugins/cms/client";
+import { commentsClientPlugin } from "@btst/stack/plugins/comments/client";
+import { formBuilderClientPlugin } from "@btst/stack/plugins/form-builder/client";
 import {
   defaultComponentRegistry,
   uiBuilderClientPlugin,
@@ -23,6 +26,32 @@ export function getStackClient(queryClient: QueryClient) {
       account: accountClientPlugin({ siteBaseURL, siteBasePath: "/p" }),
       organization: organizationClientPlugin({ siteBaseURL, siteBasePath: "/p" }),
       cms: cmsClientPlugin({
+        apiBaseURL: siteBaseURL,
+        apiBasePath: "/api/data",
+        siteBaseURL,
+        siteBasePath: "/p",
+        queryClient,
+      }),
+      blog: blogClientPlugin({
+        apiBaseURL: siteBaseURL,
+        apiBasePath: "/api/data",
+        siteBaseURL,
+        siteBasePath: "/p",
+        queryClient,
+        seo: {
+          siteName: "NiteOwl",
+          author: "NiteOwl",
+          locale: "en_US",
+        },
+      }),
+      comments: commentsClientPlugin({
+        apiBaseURL: siteBaseURL,
+        apiBasePath: "/api/data",
+        siteBaseURL,
+        siteBasePath: "/p",
+        queryClient,
+      }),
+      formBuilder: formBuilderClientPlugin({
         apiBaseURL: siteBaseURL,
         apiBasePath: "/api/data",
         siteBaseURL,
