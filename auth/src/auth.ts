@@ -20,22 +20,14 @@ export const auth = betterAuth({
   secondaryStorage: redisStorage({ client: redis }),
   emailAndPassword: {
     enabled: true,
-    requireEmailVerification: false,
   },
-  databaseHooks: {
-    user: {
-      create: {
-        before: async (user) => ({
-          data: { ...user, emailVerified: true },
-        }),
-      },
+  advanced: {
+    ipAddress: {
+      ipAddressHeaders: ["x-real-ip"],
     },
   },
   plugins: [
-    admin({ defaultRole: "user", adminRoles: ["admin"] }),
-    organization({
-      allowUserToCreateOrganization: true,
-      requireEmailVerificationOnInvitation: false,
-    }),
+    admin(),
+    organization(),
   ],
 });

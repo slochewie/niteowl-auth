@@ -1,12 +1,13 @@
 {
-  "name": "niteowl-auth-server",
+  "name": "niteowl-auth",
   "version": "0.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "auth:migrate": "auth migrate --config src/auth.ts --yes"
+    "auth:migrate": "auth migrate --config src/auth.ts --yes",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@better-auth/redis-storage": "1.6.25",
