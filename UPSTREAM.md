@@ -81,6 +81,14 @@ relative `node_modules` directories are bind-mounted into official images and
 the containers perform their documented install, migration, build, and start
 commands.
 
+### Patched transitive dependencies
+
+The generated admin lockfile is audited before deployment. Direct dependency
+updates and pnpm overrides may pin patched releases when a generated or
+transitive version has a published security advisory. These changes must not
+alter application behavior and are removed when upstream packages adopt the
+patched versions.
+
 ## Not approved
 
 The following require an explicit update to this file before implementation:
