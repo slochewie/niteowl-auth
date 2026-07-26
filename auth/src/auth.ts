@@ -18,9 +18,24 @@ export const auth = betterAuth({
   trustedOrigins: env.trustedOrigins,
   database: pool,
   secondaryStorage: redisStorage({ client: redis }),
-  emailAndPassword: { enabled: true },
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false,
+  },
+  databaseHooks: {
+    user: {
+      create: {
+        before: async (user) => ({
+          data: { ...user, emailVerified: true },
+        }),
+      },
+    },
+  },
   plugins: [
     admin({ defaultRole: "user", adminRoles: ["admin"] }),
-    organization({ allowUserToCreateOrganization: true }),
+    organization({
+      allowUserToCreateOrganization: true,
+      requireEmailVerificationOnInvitation: false,
+    }),
   ],
 });
