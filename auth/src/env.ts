@@ -6,7 +6,9 @@ const requiredNames = [
   "PGDATABASE",
   "PGUSER",
   "PGPASSWORD",
-  "REDIS_URL",
+  "REDIS_HOST",
+  "REDIS_PORT",
+  "REDIS_PASSWORD",
 ] as const;
 
 for (const name of requiredNames) {
@@ -21,5 +23,9 @@ export const env = {
     .split(",")
     .map((value) => value.trim())
     .filter(Boolean),
-  redisURL: process.env.REDIS_URL!,
+  redis: {
+    host: process.env.REDIS_HOST!,
+    port: Number(process.env.REDIS_PORT!),
+    password: process.env.REDIS_PASSWORD!,
+  },
 };
