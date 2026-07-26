@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "@btst/better-auth-ui/css";
+@import "@btst/stack/plugins/blog/css";
 @import "@btst/stack/plugins/cms/css";
+@import "@btst/stack/plugins/comments/css";
+@import "@btst/stack/plugins/form-builder/css";
 @import "@btst/stack/plugins/ui-builder/css";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";

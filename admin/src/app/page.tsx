@@ -21,6 +21,18 @@ export default function Home() {
         <Link className="rounded-md border border-zinc-700 px-4 py-2" href="/p/ui-builder">
           UI Builder
         </Link>
+        <Link className="rounded-md border border-zinc-700 px-4 py-2" href="/p/forms">
+          Form Builder
+        </Link>
+        <Link className="rounded-md border border-zinc-700 px-4 py-2" href="/p/blog">
+          Blog
+        </Link>
+        <Link
+          className="rounded-md border border-zinc-700 px-4 py-2"
+          href="/p/comments/moderation"
+        >
+          Comments
+        </Link>
       </div>
     </main>
   );
