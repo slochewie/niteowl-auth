@@ -57,8 +57,8 @@ export default function BtstPagesLayout({
 						replace: (path: string) => router.replace(path),
 						onSessionChange: () => router.refresh(),
 						Link: ({ href, ...props }: any) => <Link href={href || "#"} {...props} />,
-						basePath: "/pages/org",
-						organization: { basePath: "/pages/org" },
+						basePath: "/pages/organization",
+						organization: { basePath: "/pages/organization" },
 					},
 					}
 				}

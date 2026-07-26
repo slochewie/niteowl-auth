@@ -20,7 +20,7 @@ export function Providers({ children }: { children: ReactNode }) {
       basePath="/pages/auth"
       redirectTo="/pages/account/settings"
       account={{ basePath: "/pages/account", fields: ["image", "name"] }}
-      organization={{ basePath: "/pages/org" }}
+      organization={{ basePath: "/pages/organization" }}
     >
       {children}
     </AuthUIProvider>
