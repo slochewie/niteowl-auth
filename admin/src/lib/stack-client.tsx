@@ -38,11 +38,6 @@ export function getStackClient(queryClient: QueryClient) {
         siteBaseURL,
         siteBasePath: "/p",
         queryClient,
-        seo: {
-          siteName: "NiteOwl",
-          author: "NiteOwl",
-          locale: "en_US",
-        },
       }),
       comments: commentsClientPlugin({
         apiBaseURL: siteBaseURL,
