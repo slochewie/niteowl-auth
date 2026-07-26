@@ -24,6 +24,11 @@ Sources are consulted in this order:
 The generated Next.js application is the baseline for `admin/`. Generated
 files should remain unchanged unless a deviation is listed below.
 
+The current baseline is pinned to the stable BTST `v2.12.2` tag and
+`@btst/codegen` `0.1.3`. BTST `main` currently targets the unreleased
+`@btst/stack` 3.0.0 API and is not mixed with the stable npm packages. Updating
+this pin is a deliberate upstream-upgrade task.
+
 ## Deviation policy
 
 Every deviation from generated or documented upstream behavior must:
