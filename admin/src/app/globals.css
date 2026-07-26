@@ -1,0 +1,9 @@
+@import "tailwindcss";
+@import "@btst/better-auth-ui/css";
+
+body {
+  margin: 0;
+  background: #09090b;
+  color: #fafafa;
+  font-family: Arial, Helvetica, sans-serif;
+}

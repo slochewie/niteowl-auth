@@ -1,7 +1,8 @@
 .env
-node_modules/
+auth/node_modules/
+auth/dist/
+admin/node_modules/
+admin/.next/
 postgres/
-app/build/
-app/.react-router/
+redis/
 *.log
-.DS_Store

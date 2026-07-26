@@ -17,60 +17,83 @@ services:
       timeout: 5s
       retries: 20
       start_period: 10s
-    networks:
-      - niteowl-auth
+    networks: [niteowl-auth]
 
-  niteowl-auth:
+  redis:
+    image: redis:8-alpine
+    container_name: niteowl-auth-redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    volumes:
+      - ./redis:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$${REDIS_PASSWORD}\" ping | grep PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    networks: [niteowl-auth]
+
+  auth:
     image: node:24
     container_name: niteowl-auth
     restart: unless-stopped
     working_dir: /app
     command: ["bash", "/scripts/auth-start.sh"]
     environment:
-      NODE_ENV: production
+      NODE_ENV: ${NODE_ENV}
       PORT: 3000
       PGHOST: postgres
       PGPORT: 5432
       PGDATABASE: ${POSTGRES_DB}
       PGUSER: ${POSTGRES_USER}
       PGPASSWORD: ${POSTGRES_PASSWORD}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
-      BETTER_AUTH_URL: ${AUTH_PUBLIC_URL}
+      BETTER_AUTH_URL: ${BETTER_AUTH_URL}
       BETTER_AUTH_TRUSTED_ORIGINS: ${BETTER_AUTH_TRUSTED_ORIGINS}
     volumes:
       - ./auth:/app
       - ./auth/node_modules:/app/node_modules
       - ./scripts:/scripts:ro
     ports:
-      - "${AUTH_PORT:-3031}:3000"
+      - "${AUTH_PORT}:3000"
     depends_on:
       postgres:
         condition: service_healthy
-    networks:
-      - niteowl-auth
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:3000/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+    networks: [niteowl-auth]
 
-  niteowl-admin:
+  admin:
     image: node:24
     container_name: niteowl-admin
     restart: unless-stopped
     working_dir: /app
-    command: ["bash", "/scripts/start.sh"]
+    command: ["bash", "/scripts/admin-start.sh"]
     environment:
-      NODE_ENV: production
-      PORT: ${PORT}
-      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL}
-      VITE_AUTH_URL: ${AUTH_PUBLIC_URL}
+      NODE_ENV: ${NODE_ENV}
+      PORT: 3000
+      ADMIN_URL: ${ADMIN_URL}
+      NEXT_PUBLIC_BETTER_AUTH_URL: ${NEXT_PUBLIC_BETTER_AUTH_URL}
     volumes:
-      - ./app:/app
-      - ./app/node_modules:/app/node_modules
+      - ./admin:/app
+      - ./admin/node_modules:/app/node_modules
       - ./scripts:/scripts:ro
     ports:
-      - "${APP_PORT}:${PORT}"
+      - "${ADMIN_PORT}:3000"
     depends_on:
-      niteowl-auth:
-        condition: service_started
-    networks:
-      - niteowl-auth
+      auth:
+        condition: service_healthy
+    networks: [niteowl-auth]
 
 networks:
   niteowl-auth:
