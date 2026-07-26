@@ -1,53 +1,37 @@
 # NiteOwl Auth
 
-NiteOwl Auth is a Docker-first full-stack application built with:
+A minimal Docker Compose stack with:
 
-- React Router v7 framework mode
-- BTST backend and client stacks
-- BTST Drizzle adapter
-- BTST Better Auth UI routes
-- Better Auth with the Organization plugin
+- Better Auth API on `http://localhost:3031`
+- BTST admin and Better Auth UI on `http://localhost:3030`
 - PostgreSQL 18
-- Tailwind CSS v4 and shadcn CSS variables
-- Sonner
+- Redis 8
 
-## First startup
+## Start
 
 ```bash
 cp env.example .env
-nano .env
+```
+
+Replace every placeholder secret in `.env`, then run:
+
+```bash
 docker compose up -d
-docker compose logs -f niteowl-auth
+docker compose logs -f auth admin
 ```
 
-No local scaffolding or npm command is required before the first startup. The application scaffold is committed to Git. `scripts/start.sh` will:
+Open `http://localhost:3030`.
 
-1. install dependencies and create `app/package-lock.json` when it does not exist;
-2. use `npm ci` on later starts when the lockfile exists;
-3. apply Better Auth database migrations;
-4. run React Router type generation and TypeScript checks;
-5. build the production React Router application;
-6. start the production server.
+The first startup installs locked npm dependencies, applies Better Auth migrations,
+builds the BTST admin, and starts both Node services. Later starts skip installation
+and rebuilding unless their inputs changed.
 
-## Routes
+## Services
 
-- Application: `http://localhost:3010/`
-- Health: `http://localhost:3010/health`
-- Better Auth API: `http://localhost:3010/api/auth/*`
-- BTST data API: `http://localhost:3010/api/data/*`
-- BTST pages: `http://localhost:3010/p/*`
-- Sign in: `http://localhost:3010/p/auth/sign-in`
-- Account settings: `http://localhost:3010/p/account/settings`
-- Organization members: `http://localhost:3010/p/org/members`
-
-The application exposes one container port, `3000`, mapped to host port `3010` by default. BTST does not require a separate port.
-
-## Reverse proxy
-
-For deployment at `auth.example.com`, set:
-
-```dotenv
-BETTER_AUTH_URL=https://auth.example.com
-BETTER_AUTH_TRUSTED_ORIGINS=https://auth.example.com
-PUBLIC_SITE_URL=https://auth.example.com
+```text
+Browser -> BTST admin (3030) -> Better Auth API (3031)
+                                   |           |
+                              PostgreSQL     Redis
 ```
+
+PostgreSQL and Redis are internal-only and are not exposed on host ports.
