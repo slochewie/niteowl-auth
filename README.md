@@ -2,7 +2,7 @@
 
 A minimal Docker Compose stack with:
 
-- Better Auth API on `http://localhost:3031`
+- Better Auth API, available to the UI through `/api/auth/*`
 - BTST admin and Better Auth UI on `http://localhost:3030`
 - PostgreSQL 18
 - Redis 8
@@ -22,6 +22,13 @@ docker compose logs -f auth admin
 
 Open `http://localhost:3030`.
 
+If another computer will open the admin by IP address or hostname, set `ADMIN_URL`
+to that exact public origin before starting the stack. For example:
+
+```dotenv
+ADMIN_URL=http://192.168.111.27:3030
+```
+
 The first startup installs locked npm dependencies, applies Better Auth migrations,
 builds the BTST admin, and starts both Node services. Later starts skip installation
 and rebuilding unless their inputs changed.
@@ -29,9 +36,11 @@ and rebuilding unless their inputs changed.
 ## Services
 
 ```text
-Browser -> BTST admin (3030) -> Better Auth API (3031)
-                                   |           |
-                              PostgreSQL     Redis
+Browser -> BTST admin (3030) -> /api/auth/* -> Better Auth
+                                                 |     |
+                                            PostgreSQL Redis
 ```
 
-PostgreSQL and Redis are internal-only and are not exposed on host ports.
+The browser uses the admin origin for authentication. The admin container proxies
+those requests to the auth container over the private Compose network. PostgreSQL
+and Redis are internal-only and are not exposed on host ports.
