@@ -1,19 +1,20 @@
 import { StackProvider } from "@btst/stack/context";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Link as RouterLink, Outlet, useNavigate } from "react-router";
+import { Outlet } from "react-router";
 import { authClient } from "~/lib/auth-client";
 import { getOrCreateQueryClient } from "~/lib/query-client";
 
 export default function BtstPagesLayout() {
-  const navigate = useNavigate();
   const queryClient = getOrCreateQueryClient();
 
   const sharedRouterOverrides = {
-    navigate: (path: string) => navigate(path),
-    replace: (path: string) => navigate(path, { replace: true }),
+    navigate: (path: string) => window.location.assign(path),
+    replace: (path: string) => window.location.replace(path),
     onSessionChange: () => window.location.reload(),
-    Link: ({ href, to, ...props }: any) => (
-      <RouterLink to={href || to || "#"} {...props} />
+    Link: ({ href, to, children, ...props }: any) => (
+      <a href={href || to || "#"} {...props}>
+        {children}
+      </a>
     ),
   };
 
