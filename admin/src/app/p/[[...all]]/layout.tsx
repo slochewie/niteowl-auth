@@ -75,11 +75,7 @@ export default function PagesLayout({ children }: { children: ReactNode }) {
           },
           blog: {},
           cms: {},
-          comments: {
-            currentUserId: async () =>
-              (await authClient.getSession()).data?.user.id,
-            loginHref: "/p/auth/sign-in",
-          },
+          comments: {},
           "form-builder": {},
           "ui-builder": {
             componentRegistry: defaultComponentRegistry,
