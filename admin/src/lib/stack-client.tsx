@@ -4,8 +4,14 @@ import {
   organizationClientPlugin,
 } from "@btst/better-auth-ui/client";
 import { createStackClient } from "@btst/stack/client";
+import { cmsClientPlugin } from "@btst/stack/plugins/cms/client";
+import {
+  defaultComponentRegistry,
+  uiBuilderClientPlugin,
+} from "@btst/stack/plugins/ui-builder/client";
+import type { QueryClient } from "@tanstack/react-query";
 
-export function getStackClient() {
+export function getStackClient(queryClient: QueryClient) {
   const siteBaseURL =
     typeof window === "undefined"
       ? process.env.ADMIN_URL ?? "http://localhost:3030"
@@ -16,6 +22,21 @@ export function getStackClient() {
       auth: authClientPlugin({ siteBaseURL, siteBasePath: "/p" }),
       account: accountClientPlugin({ siteBaseURL, siteBasePath: "/p" }),
       organization: organizationClientPlugin({ siteBaseURL, siteBasePath: "/p" }),
+      cms: cmsClientPlugin({
+        apiBaseURL: siteBaseURL,
+        apiBasePath: "/api/data",
+        siteBaseURL,
+        siteBasePath: "/p",
+        queryClient,
+      }),
+      uiBuilder: uiBuilderClientPlugin({
+        apiBaseURL: siteBaseURL,
+        apiBasePath: "/api/data",
+        siteBaseURL,
+        siteBasePath: "/p",
+        queryClient,
+        componentRegistry: defaultComponentRegistry,
+      }),
     },
   });
 }
