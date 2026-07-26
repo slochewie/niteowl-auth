@@ -6,6 +6,11 @@ import { env } from "./env.js";
 
 const app = express();
 
+app.use((request, _response, next) => {
+  request.headers["x-real-ip"] =
+    request.ip || request.socket.remoteAddress || "";
+  next();
+});
 app.use(cors({ origin: env.trustedOrigins, credentials: true }));
 app.all("/api/auth/*splat", toNodeHandler(auth));
 app.use(express.json());

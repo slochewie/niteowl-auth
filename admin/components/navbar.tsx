@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { MenuIcon } from "lucide-react"
+import { SignedIn, SignedOut, UserButton } from "@btst/better-auth-ui"
 import { ModeToggle } from "./mode-toggle"
 import { Button } from "@/components/ui/button"
 import {
@@ -33,10 +34,21 @@ export function Navbar() {
 								<Link href={link.href}>{link.label}</Link>
 							</Button>
 						))}
+						<SignedOut>
+							<Button variant="ghost" asChild>
+								<Link href="/pages/auth/sign-in">Sign In</Link>
+							</Button>
+						</SignedOut>
+						<SignedIn>
+							<UserButton size="icon" />
+						</SignedIn>
 						<ModeToggle />
 					</div>
 
 					<div className="flex md:hidden items-center gap-2">
+						<SignedIn>
+							<UserButton size="icon" />
+						</SignedIn>
 						<ModeToggle />
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
@@ -53,6 +65,11 @@ export function Navbar() {
 										</Link>
 									</DropdownMenuItem>
 								))}
+								<SignedOut>
+									<DropdownMenuItem asChild>
+										<Link href="/pages/auth/sign-in">Sign In</Link>
+									</DropdownMenuItem>
+								</SignedOut>
 							</DropdownMenuContent>
 						</DropdownMenu>
 					</div>

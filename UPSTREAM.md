@@ -55,6 +55,11 @@ The BTST admin uses the `@btst/better-auth-ui` client plugin and Better Auth
 client SDK. It must not initialize the Better Auth server or connect directly
 to the identity database.
 
+The root provider and navigation use the Better Auth UI fork's documented
+`AuthUIProvider`, `SignedIn`, `SignedOut`, and `UserButton` components. The
+Better Auth Express service overwrites `x-real-ip` from the direct socket
+address and configures that trusted header for Better Auth rate limiting.
+
 ### Docker Compose deployment
 
 The stack is orchestrated by Docker Compose so a fresh checkout can be started
