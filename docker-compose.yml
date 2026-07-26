@@ -25,19 +25,46 @@ services:
     container_name: niteowl-auth
     restart: unless-stopped
     working_dir: /app
-    command: ["bash", "/scripts/start.sh"]
+    command:
+      - bash
+      - -lc
+      - |
+        npm install
+        npm run auth:migrate
+        exec npm start
     environment:
       NODE_ENV: production
-      PORT: ${PORT}
+      PORT: 3000
       PGHOST: postgres
       PGPORT: 5432
       PGDATABASE: ${POSTGRES_DB}
       PGUSER: ${POSTGRES_USER}
       PGPASSWORD: ${POSTGRES_PASSWORD}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
-      BETTER_AUTH_URL: ${BETTER_AUTH_URL}
+      BETTER_AUTH_URL: ${AUTH_PUBLIC_URL}
       BETTER_AUTH_TRUSTED_ORIGINS: ${BETTER_AUTH_TRUSTED_ORIGINS}
+    volumes:
+      - ./auth:/app
+      - ./auth/node_modules:/app/node_modules
+    ports:
+      - "${AUTH_PORT:-3031}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - niteowl-auth
+
+  niteowl-admin:
+    image: node:24
+    container_name: niteowl-admin
+    restart: unless-stopped
+    working_dir: /app
+    command: ["bash", "/scripts/start.sh"]
+    environment:
+      NODE_ENV: production
+      PORT: ${PORT}
       PUBLIC_SITE_URL: ${PUBLIC_SITE_URL}
+      VITE_AUTH_URL: ${AUTH_PUBLIC_URL}
     volumes:
       - ./app:/app
       - ./app/node_modules:/app/node_modules
@@ -45,8 +72,8 @@ services:
     ports:
       - "${APP_PORT}:${PORT}"
     depends_on:
-      postgres:
-        condition: service_healthy
+      niteowl-auth:
+        condition: service_started
     networks:
       - niteowl-auth
 
